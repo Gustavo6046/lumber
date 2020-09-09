@@ -1,16 +1,33 @@
-const { Game, Unit, Player } = require('@lumberjs/common')
+// @flow
 
-let game = new Game();
-let player = new Player(game, 'defacto', 'Defacto');
+//const { Game, Unit, Player, UnitType } = require('@lumberjs/common') // prod
 
-let stoneGeneratorType = {
-    maybeNextState: function(ent) { return null; },
-    tick: function(ent) { ent.props.counter = (ent.props.counter || 0) + 1; if (ent.props.counter > 40) { ent.props.counter = 0; ent.getOwner().giveResources('stone', 15)} },
-    initialize: function(ent) {  },
-}
+const { Game, Unit, Player, UnitType } = require('../common') // test
 
-let stoneGenerator = new Unit(game, stoneGeneratorType);
+game = new Game();
+player = new Player(game, 'defacto', 'Defacto');
+player.register();
 
-document.title = `Lumber (Player: ${player.basicStatus()})`;
+game.addType('stonegen', 'Stone Generator', {
+    tick: function(ent) {
+        let player = ent.getOwner();
 
-game.start(60);
+        ent.props.counter = (ent.props.counter || 0) + 1;
+        
+        if (ent.props.counter > 40) {
+            ent.props.counter = 0;
+            player.giveResources('stone', 15);
+            console.log(`Added stone to player ${player.name}!`);
+        }
+    },
+})
+
+stoneGenerator = new Unit(game, 'stonegen');
+stoneGenerator.setOwner(player);
+stoneGenerator.register();
+
+console.log('Started!');
+
+game.start(60, function() {
+    document.title = `Lumber | ${player.basicStatus()}`;
+});

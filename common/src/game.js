@@ -1,4 +1,7 @@
+// @flow
+
 import Player from './player';
+import makeUnitType from './unittype'
 
 
 /**
@@ -85,6 +88,16 @@ module.exports = class Game {
     }
 
     /**
+     * Registers a Unit type to this Game.
+     * @param {string} id The abbreviated id of the unit type.
+     * @param {string} name The human-readable name of the unit type.
+     * @param {object} funcs A set of functions expected from the unit type.
+     */
+    addType(id, name, funcs) {
+        this.types.set(id, makeUnitType(id, name, funcs));
+    }
+
+    /**
      * Gets the next spawn position around the which
      * to place the initial Units and Buildings of a Player
      * in the world of this Game.
@@ -127,7 +140,7 @@ module.exports = class Game {
         }
 
         else {
-            let c = new Chunk();
+            let c = new Chunk([Math.floor(xy[0] / this.chunkSize), Math.floor(xy[1] / this.chunkSize)]);
             this.chunks.set(name, c);
             return c;
         }
@@ -140,12 +153,12 @@ module.exports = class Game {
      * 
      * @returns The JavaScript interval handle of the running loop, returned by setInterval.
      */
-    start(tps) {
+    start(tps, perTick) {
         if (this.interval) {
             clearInterval(this.interval);
         }
 
-        return this.interval = setInterval(this._tick, 1000 / tps);
+        return this.interval = setInterval(this._tick.bind(this, perTick), 1000 / tps);
     }
 
     /**
@@ -162,5 +175,13 @@ module.exports = class Game {
         else {
             return false;
         }
+    }
+
+    _tick(_perTick) {
+        this.units.forEach((u) => {
+            u.tick();
+        });
+
+        _perTick();
     }
 }

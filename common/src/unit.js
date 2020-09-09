@@ -1,4 +1,7 @@
+// @flow
+
 import { v4 as uuidv4 } from 'uuid';
+import Player from './player';
 
 /**
  * A single unit ingame. For example,
@@ -40,10 +43,16 @@ module.exports = class Unit {
      * Sets the owner of this Unit. It should be a valid Player
      * in the unit's Game.
      * 
-    * @param {string} name The name of this Unit's owner.
+    * @param {Player or string} id This Unit's owner, or the id thereof.
      */
-    setOwner(name) {
-        this.owner = name;
+    setOwner(id: string | Player) {
+        if (id instanceof Player) {
+            this.owner = id.id;
+        }
+
+        else {
+            this.owner = id;
+        }
     }
 
     /**
@@ -83,7 +92,7 @@ module.exports = class Unit {
      * @returns {Object} The type found while updating, or null if it does not need updating.
      */
     updateType() {
-        if (this.type.name == this.typename) return null;
+        if (this.type != null && this.type.name == this.typename) return null;
 
         return this.type = this.game.types.get(this.typename);
     }
@@ -136,11 +145,11 @@ module.exports = class Unit {
             this.state = newState;
         }
 
-        this.type.states[this.state].tick(this);
+        this.type.tick(this);
     }
 
     updateChunk() {
-        let chunk = this.game.chunks.getChunkOfPos(this.getXY());
+        let chunk = this.game.getChunkOfPos(this.getXY());
 
         if (this._lastChunk != null && this._lastChunk !== chunk) {
             this._lastChunk.delete(this.id);

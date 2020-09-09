@@ -1,3 +1,5 @@
+// @flow
+
 /**
  * A player partaking in the game. This is only an interface
  * containing in-game state (such as resources) and used by
@@ -11,7 +13,7 @@ module.exports = class Player {
      * @param {id} id The ID of this new Player.
      * @param {name} name The name of this new Player.
      */
-    constructor(game, id, name) {
+    constructor(game: Game, id, name) {
         this.id = id;
         this.name = name;
 
@@ -37,6 +39,16 @@ module.exports = class Player {
     register() {
         this.game.players.set(this.id, this);
         this.game.addedPlayer(this);
+    }
+
+    popCount() {
+        let res = 0;
+
+        this.units.forEach((u) => {
+            if (!u.props.noCount) res++;
+        });
+
+        return res;
     }
 
     /**
@@ -99,12 +111,14 @@ module.exports = class Player {
         let resources = [];
 
         Object.keys(this.resources).forEach((name) => {
-            this.resources.push(`${this.resources[name]} ${name}`);
+            resources.push(`${this.resources[name]} ${name}`);
         });
 
-        if (this.resources.length > 0) {
-            res = `${res} (${', '.join(resources)}) - pop: ${this.units.size()}`;
+        if (this.resources) {
+            res += ` - ${resources.join(', ')}`;
         }
+
+        res += ` - pop: ${this.popCount()}`
 
         return res;
     }

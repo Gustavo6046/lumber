@@ -1,0 +1,12 @@
+{
+  "name": "@lumberjs/server",
+  "version": "0.0.1",
+  "description": "Lumber HTTP game server and API.",
+  "main": "index.js",
+  "author": "Gustavo Rehermann <rehermann6046@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "ws": "^7.3.1"
+  }
+}

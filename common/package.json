@@ -1,0 +1,11 @@
+{
+  "name": "@lumberjs/common",
+  "version": "0.0.1",
+  "description": "Common logic for operating with Lumber (game view, units and buildings, etc)",
+  "main": "index.js",
+  "author": "Gustavo Rehermann <rehermann6046@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^8.3.0"
+  }
+}

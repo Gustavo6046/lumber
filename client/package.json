@@ -1,0 +1,8 @@
+{
+  "name": "@lumberjs/client",
+  "version": "0.0.1",
+  "description": "Lumber browser client. Supports both singleplayer and multiplayer.",
+  "main": "index.js",
+  "author": "Gustavo Rehermann <rehermann6046@gmail.com>",
+  "license": "MIT"
+}

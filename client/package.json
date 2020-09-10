@@ -14,9 +14,16 @@
   "devDependencies": {
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.0.0-0",
+    "@babel/polyfill": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-flow": "^7.10.4",
     "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-svelte": "^4.0.6",
+    "svelte": "^3.24.1"
+  },
+  "dependencies": {
+    "fabric": "^4.1.0"
   }
 }

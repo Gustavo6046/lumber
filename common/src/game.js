@@ -93,13 +93,13 @@ module.exports = class Game {
      * @param {string} name The human-readable name of the unit type.
      * @param {object} funcs A set of functions expected from the unit type.
      */
-    addType(id, name, funcs) {
+    addUnitType(id, name, funcs) {
         this.types.set(id, makeUnitType(id, name, funcs));
     }
 
     /**
      * Gets the next spawn position around the which
-     * to place the initial Units and Buildings of a Player
+     * to place the initial Units and buildings of a Player
      * in the world of this Game.
      */
     nextSpawnPos() {
@@ -178,10 +178,15 @@ module.exports = class Game {
     }
 
     _tick(_perTick) {
+        let timeDelta = _perTick.lastTime;
+
+        _perTick.lastTime = Date.now();
+        timeDelta = Date.now() - timeDelta;
+
         this.units.forEach((u) => {
-            u.tick();
+            u.tick(timeDelta);
         });
 
-        _perTick();
+        _perTick(timeDelta);
     }
 }

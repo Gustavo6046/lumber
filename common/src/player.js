@@ -114,7 +114,7 @@ module.exports = class Player {
             resources.push(`${this.resources[name]} ${name}`);
         });
 
-        if (this.resources) {
+        if (resources.length > 0) {
             res += ` - ${resources.join(', ')}`;
         }
 

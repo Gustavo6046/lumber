@@ -147,25 +147,20 @@
 {#if panning}
     <style>
         .joystick-head {
-            background-color: #aad;
-            box-shadow: #aaac 0px 0px 1px 2px;
-        }
-
-        .joystick-head {
-            background-color: #fad;
-            box-shadow: #faac 0px 0px 1px 2px;
+            background-color: #9af;
+            box-shadow: #9afe 0px 0px 1px 2px;
         }
     </style>
 {:else}
     <style>
         .joystick-head {
             background-color: #999;
-            box-shadow: #999c 0px 0px 1px 2px;
+            box-shadow: #999b 0px 0px 1px 2px;
         }
 
-        .joystick-head:hover {
-            background-color: #d99;
-            box-shadow: #d99c 0px 0px 1px 2px;
+        .joystick-base:hover > .joystick-head {
+            background-color: #a99;
+            box-shadow: #a99c 0px 0px 1px 2px;
         }
     </style>
 {/if}

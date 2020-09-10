@@ -25,5 +25,9 @@
   },
   "dependencies": {
     "fabric": "^4.1.0"
+  },
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   }
 }

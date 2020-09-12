@@ -118,7 +118,7 @@
 <style>
     .joystick-base {
         margin: 5px;
-        padding: 0px;
+        padding: 2px;
         background-color: #555;
         border-radius: 100%;
         display: inline-block;
@@ -139,8 +139,6 @@
         position: absolute;
         display: inline-block;
         padding: 8px;
-        top: 50% - 8px;
-        left: 50% - 8px;
     }
 </style>
 

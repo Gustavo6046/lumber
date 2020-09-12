@@ -9,6 +9,18 @@ import { onMount } from 'svelte';
     let game = new Game();
     let _canvasTick;
 
+    let mh = {
+        type:           'point',
+        color:          '#5AD8',
+        strongColor:    '#FFFC',
+        pos:            'mouse',
+    };
+
+    let highlights = [
+        mh,
+    ];
+
+
     // Mouse position in canvas.
     let mouse = {
         x: 0,
@@ -29,33 +41,76 @@ import { onMount } from 'svelte';
 
     // Whether we are currently panning the view.
     let panning = false;
+    let zooming = false;
 
-    export let zoom = 2;
+    let zoomVel = 0;
+    
+    function initGame() {
+        
+    }
+
+    let zoom = 2;
+
+    let maxZoom = 15;
+    let minZoom = 0.5;
+
+    let minZoomSpeed = 0.6;
+    let maxZoomSpeed = 2.5;
+
+    function makeHighlight(type, color, pos) {
+        return {
+            // Whether a tile or spot under the cursor should be
+            // highlighted.
+            // Valid values: 'none', 'tile', 'point'
+            type: type,
+
+            // The color of the highlight.
+            // Any CSS-compatible value works.
+            color: color,
+
+            // The focal position of the highlight.
+            // Valid values: 'mouse', { x: number, y: number }
+            pos: pos
+        }
+    }
     
     function onclick() {
         // Reset panning.
         panning = false;
-    }
-    
-    function onmousemove(e) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+
+        // [TEST]
+        mh.type = (mh.type === 'tile') ? 'point' : 'tile';
     }
 
     function _tick(timeDelta) {
         if (panning) {
-            posXY.x += panXY.x * zoom / 3;
-            posXY.y += panXY.y * zoom / 3;
+            posXY.x += panXY.x * zoom / 3 * timeDelta;
+            posXY.y += panXY.y * zoom / 3 * timeDelta;
+        }
+
+        if (zooming) {
+            let zoomTransformed = (zoom - minZoom) / (maxZoom - minZoom);
+            let zoomSpeedScale = zoomTransformed * maxZoomSpeed + (1 - zoomTransformed) * minZoomSpeed;
+
+            zoom += zoomVel * zoomSpeedScale * timeDelta;
+
+            if (zoom < minZoom) {
+                zoom = minZoom;
+            }
+
+            if (zoom > maxZoom) {
+                zoom = maxZoom;
+            }
         }
 
         _canvasTick(timeDelta);
     }
 
     onMount(() => {
+        initGame();
+
         game.start(30, _tick);
     });
-
-    let canvas;
 </script>
 
 
@@ -66,16 +121,15 @@ import { onMount } from 'svelte';
         box-sizing: border-box;
         box-shadow: #99c6 -2px 2px 5px 1px;
     }
-
-    .copyright-stuff {
-        color: #fff3;
-        font-family:Arial, Helvetica, sans-serif;
-        text-align: center;
-    }
 </style>
 
 
 <div class="game-panel">
-    <GameCanvas game={game} tileSize=64 zoom={zoom} posXY={posXY} mouse={mouse} on:click={onclick} on:mousemove={onmousemove} bind:canvas={canvas} bind:_tick={_canvasTick}></GameCanvas>
-    <Bar bind:panning={panning} bind:panXY={panXY} posXY={posXY} />
+    <GameCanvas
+        game={game} highlights={highlights}
+        tileSize=64 zoom={zoom} posXY={posXY}
+        bind:mouse={mouse} on:click={onclick}
+        bind:_tick={_canvasTick}
+    ></GameCanvas>
+    <Bar bind:panning={panning} bind:panXY={panXY} bind:zooming={zooming} bind:zoomVel={zoomVel} />
 </div>

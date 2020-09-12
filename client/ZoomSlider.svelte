@@ -9,11 +9,6 @@
         y: 0,
     };
 
-    window.addEventListener('resize', () => {
-        updateSizes();
-        updateHead();
-    });
-
     let _lastPanPos;
     let status;
     let paused = false;
@@ -47,6 +42,11 @@
     onMount(() => {
         updateSizes();
         updateHead();
+
+        window.addEventListener('resize', () => {
+            updateSizes();
+            updateHead();
+        });
     });
 
     function updateHead() {

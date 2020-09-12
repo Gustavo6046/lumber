@@ -9,6 +9,8 @@ import { onMount } from 'svelte';
     let game = new Game();
     let _canvasTick;
 
+    let panScale = 16.0;
+
     let mh = {
         type:           'point',
         color:          '#5AD8',
@@ -51,11 +53,11 @@ import { onMount } from 'svelte';
 
     let zoom = 2;
 
-    let maxZoom = 12;
-    let minZoom = 0.6;
+    let maxZoom = 3;
+    let minZoom = 0.5;
 
-    let minZoomSpeed = 1.1;
-    let maxZoomSpeed = 5.0;
+    let minZoomSpeed = 2.5;
+    let maxZoomSpeed = 4.0;
 
     function makeHighlight(type, color, pos) {
         return {
@@ -84,8 +86,8 @@ import { onMount } from 'svelte';
 
     function _tick(timeDelta) {
         if (panning) {
-            posXY.x += panXY.x * zoom * timeDelta;
-            posXY.y += panXY.y * zoom * timeDelta;
+            posXY.x += panXY.x * zoom * panScale * timeDelta;
+            posXY.y += panXY.y * zoom * panScale * timeDelta;
         }
 
         if (zooming) {

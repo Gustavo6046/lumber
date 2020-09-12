@@ -16,11 +16,6 @@
     let status;
     let paused = false;
 
-    window.addEventListener('resize', () => {
-        updateSizes();
-        updateHead();
-    });
-
     export let panning = false;
 
     let joystickBase = null;
@@ -48,6 +43,11 @@
     onMount(() => {
         updateSizes();
         updateHead();
+
+        window.addEventListener('resize', () => {
+            updateSizes();
+            updateHead();
+        });
     });
 
     function updateHead() {
@@ -175,7 +175,7 @@
 <div class="joystick-base" bind:this={joystickBase} unselectable="on"
     on:mousedown={joystickStart.bind(this, 'mousedown')}
     on:dragend={joystickStop}
-    on:mouseout={joystickPause.bind(this, false)}
+    on:mouseout={joystickStop}
     on:mouseover={joystickPause.bind(this, true)}
     on:mouseup={joystickStop}
     on:mousemove={joystickMove}

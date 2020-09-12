@@ -17,7 +17,8 @@
             throw new Error("Could not initialize GameCanvas: canvas not found!");
         }
 
-        canvas.addEventListener('mousemove', onmousemove);
+        initBackgroundPatterns();
+        drawGame();
     });
 
     /* Canvas Rendering */
@@ -164,40 +165,56 @@
         _path();
     }
 
-    function drawBackground(cctx) {
-        // chess background (for now)
+    function backgroundPatternColor(tileX, tileY) {
+        let col = [0, 0, 0];
 
-        let curTile = getTileAt(transformFromCamera({x: 0, y: 0}));
+        if ((tileX % 2 === 0) != (tileY % 2 === 0)) {
+            col[0] += 10;
+            col[1] += 10;
+            col[2] += 16;
+        }
 
-        let { x: initX, y: initY } = curTile;
+        col[0] += Math.round(Math.cos(tileX * Math.PI / 4) * 8);
+        col[1] += Math.round(Math.sin(tileY * Math.PI / 4) * 8);
         
-        let curXY = getTileBounds(curTile, transformToCamera);
+        return `rgba(${col.join(', ')}, 20)`;
+    }
 
-        let row = initX % 2;
+    function drawBackgroundPatterns(bgctx, res, tileDiameter) {
+        let tx = 0, ty = 0;
 
-        while (curXY.top < size.y) {
-            let col = initY % 2;
-        
-            while (curXY.left < size.x) {
-                let chessness = (row === 0) !== (col === 0);
+        while (ty < tileDiameter) {
+            while (tx < tileDiameter) {
+                bgctx.fillStyle = backgroundPatternColor(tx, ty);
+                bgctx.fillRect(tx * res, ty * res, res, res);
 
-                if (chessness) {
-                    cctx.fillStyle = '#9090D00A';
-                    cctx.fillRect(curXY.left, curXY.top, curXY.diameter, curXY.diameter);
-                }
-            
-                curTile.x++;
-                col = (col + 1) % 2;
-
-                curXY = getTileBounds(curTile, transformToCamera);
+                tx++
             }
 
-            curTile.x = initX;
-            curTile.y++;
-            row = (row + 1) % 2;
-
-            curXY = getTileBounds(curTile, transformToCamera);
+            tx = 0;
+            ty++;
         }
+    }
+
+    function initBackgroundPatterns() {
+        // chess background (for now)
+
+        let bgcanvas = document.createElement('canvas');
+
+        let bgctx = bgcanvas.getContext('2d');
+
+        bgcanvas.width = tileSize * 16;
+        bgcanvas.height = tileSize * 16;
+
+        drawBackgroundPatterns(bgctx, tileSize, 16);
+
+        console.log(bgcanvas.toDataURL());
+        canvas.style.backgroundImage = 'url(' + bgcanvas.toDataURL() + ')';
+    }
+
+    function drawBackground(cctx) {
+        canvas.style.backgroundPosition = `${size.x / 2 - posXY.x}px ${size.y / 2 - posXY.y}px`;
+        canvas.style.backgroundSize = `${tileSize * 16 / zoom}px`;
     }
 
     function drawHighlights(cctx) {
@@ -220,15 +237,19 @@
 
         let cctx = canvas.getContext('2d');
 
-        clear(cctx);
+        //clear(cctx);
 
         drawBackground(cctx);
         drawUnits(cctx);
         drawHighlights(cctx);
+
+        window.requestAnimationFrame(() => {
+            drawGame();
+        });
     }
 
     export function _tick(timeDelta) {
-        drawGame();
+        
     }
 </script>
 
@@ -248,7 +269,7 @@
         height: 70%;
         box-sizing: border-box;
         margin: 0px;
-        padding: 10px;
+        padding: 0px;
 
         position: absolute;
         left: 0px;

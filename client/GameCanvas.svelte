@@ -5,6 +5,7 @@
     export let game;
     export let tileSize, zoom;
     export let highlights;
+    export let showDebugInfo = false;
 
     let size = {x: 0, y: 0};
     let outer;
@@ -212,6 +213,9 @@
 </style>
 
 <div bind:this={outer}>
-    Zoom: {Math.round(100 / zoom)}% | Pos: {Math.round(posXY.x)},{Math.round(posXY.y)} | Mouse: {Math.round(mouse.x)}px,{Math.round(mouse.y)}px (real: {Math.round(transformFromCamera(mouse).x)},{Math.round(transformFromCamera(mouse).y)} - tile: {Math.round(getTileAt(transformFromCamera(mouse)).x)},{Math.round(getTileAt(transformFromCamera(mouse)).y)}) | Visual tile size: {Math.round(tileSize / zoom)}px
+    {#if showDebugInfo}
+        <div>Zoom: {Math.round(100 / zoom)}% | Pos: {Math.round(posXY.x)},{Math.round(posXY.y)} | Mouse: {Math.round(mouse.x)}px,{Math.round(mouse.y)}px (real: {Math.round(transformFromCamera(mouse).x)},{Math.round(transformFromCamera(mouse).y)} - tile: {Math.round(getTileAt(transformFromCamera(mouse)).x)},{Math.round(getTileAt(transformFromCamera(mouse)).y)}) | Visual tile size: {Math.round(tileSize / zoom)}px</div>
+    {/if}
+
     <canvas id="game-view" bind:this={canvas} on:click on:mousemove={onmousemove} on:mouseout={onmouseout}></canvas>
 </div>

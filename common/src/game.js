@@ -183,6 +183,8 @@ module.exports = class Game {
         _perTick.lastTime = Date.now();
         timeDelta = Date.now() - timeDelta;
 
+        timeDelta /= 1000;
+
         this.units.forEach((u) => {
             u.tick(timeDelta);
         });

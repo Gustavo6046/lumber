@@ -208,7 +208,6 @@
 
         drawBackgroundPatterns(bgctx, tileSize, 16);
 
-        console.log(bgcanvas.toDataURL());
         canvas.style.backgroundImage = 'url(' + bgcanvas.toDataURL() + ')';
     }
 

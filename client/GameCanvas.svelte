@@ -164,6 +164,42 @@
         _path();
     }
 
+    function drawBackground(cctx) {
+        // chess background (for now)
+
+        let curTile = getTileAt(transformFromCamera({x: 0, y: 0}));
+
+        let { x: initX, y: initY } = curTile;
+        
+        let curXY = getTileBounds(curTile, transformToCamera);
+
+        let row = initX % 2;
+
+        while (curXY.top < size.y) {
+            let col = initY % 2;
+        
+            while (curXY.left < size.x) {
+                let chessness = (row === 0) !== (col === 0);
+
+                if (chessness) {
+                    cctx.fillStyle = '#9090D00A';
+                    cctx.fillRect(curXY.left, curXY.top, curXY.diameter, curXY.diameter);
+                }
+            
+                curTile.x++;
+                col = (col + 1) % 2;
+
+                curXY = getTileBounds(curTile, transformToCamera);
+            }
+
+            curTile.x = initX;
+            curTile.y++;
+            row = (row + 1) % 2;
+
+            curXY = getTileBounds(curTile, transformToCamera);
+        }
+    }
+
     function drawHighlights(cctx) {
         highlights.forEach((hl) => {
             drawHighlight(cctx, hl);
@@ -185,6 +221,8 @@
         let cctx = canvas.getContext('2d');
 
         clear(cctx);
+
+        drawBackground(cctx);
         drawUnits(cctx);
         drawHighlights(cctx);
     }

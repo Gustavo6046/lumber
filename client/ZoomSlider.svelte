@@ -29,10 +29,10 @@
         let headBounds = sliderHead.getBoundingClientRect();
         let headRadius = (headBounds.bottom - headBounds.top) / 2;
 
-        center.x = sliderBase.clientWidth / 2 - sliderHead.clientWidth / 2;
+        center.x = sliderBase.clientWidth / 2 - headRadius;
         center.y = sliderBase.clientHeight / 2 - headRadius;
 
-        maxDist = center.y - parseFloat(window.getComputedStyle(sliderBase, null).getPropertyValue('padding-top'));
+        maxDist = center.y - headRadius - parseFloat(window.getComputedStyle(sliderBase, null).getPropertyValue('padding-top'));
     }
 
     onMount(() => {

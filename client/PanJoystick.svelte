@@ -27,10 +27,13 @@
     };
 
     function updateSizes() {
-        center.x = joystickBase.clientWidth / 2 - joystickHead.clientWidth / 2;
-        center.y = joystickBase.clientHeight / 2 - joystickHead.clientHeight / 2;
+        let headBounds = joystickHead.getBoundingClientRect();
+        let headRadius = (headBounds.bottom - headBounds.top) / 2;
 
-        center.maxRad = Math.pow(center.x, 2) + Math.pow(center.y, 2);
+        center.x = joystickBase.clientWidth / 2 - headRadius;
+        center.y = joystickBase.clientHeight / 2 - headRadius;
+
+        center.maxRad = Math.pow(center.x - headRadius, 2) + Math.pow(center.y - headRadius, 2);
     }
 
     onMount(() => {

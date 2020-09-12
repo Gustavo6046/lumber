@@ -9,6 +9,11 @@
         y: 0,
     };
 
+    window.addEventListener('resize', () => {
+        updateSizes();
+        updateHead();
+    });
+
     let _lastPanPos;
     let status;
     let paused = false;
@@ -29,8 +34,12 @@
         let headBounds = sliderHead.getBoundingClientRect();
         let headRadius = (headBounds.bottom - headBounds.top) / 2;
 
-        center.x = sliderBase.clientWidth / 2 - headRadius;
-        center.y = sliderBase.clientHeight / 2 - headRadius;
+        let baseBounds = sliderBase.getBoundingClientRect();
+        let baseW = baseBounds.right - baseBounds.left;
+        let baseH = baseBounds.bottom - baseBounds.top;
+
+        center.x = baseW / 2 - headRadius;
+        center.y = baseH / 2 - headRadius;
 
         maxDist = center.y - headRadius - parseFloat(window.getComputedStyle(sliderBase, null).getPropertyValue('padding-top'));
     }
@@ -115,7 +124,7 @@
 <style>
     .slider-base {
         margin: 5px;
-        padding: 5px;
+        padding: 8px;
         height: 90%;
         background-color: #555;
         border-radius: 10%;
@@ -131,7 +140,7 @@
         margin: 0px;
         padding: 0px;
         border-radius: 100%;
-        width: 100%;
+        width: 75%;
         height: 10%;
         font-size: 50%;
         position: absolute;

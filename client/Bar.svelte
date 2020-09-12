@@ -21,13 +21,19 @@
         box-sizing: border-box;
 
         min-width: 80%;
-        width: 100%;
-        max-width: 100%;
-        min-height: 100px;
+        width: 95%;
+        max-width: 95%;
+        left: 50%;
+        margin-left: -47.5%;
+        min-height: 80px;
         height: 20%;
         max-height: 20%;
         
         box-shadow: #99c6 -2px 2px 5px 1px;
+
+        position: absolute;
+        bottom: 5px;
+        display: flex;
     }
 </style>
 

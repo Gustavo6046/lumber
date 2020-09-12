@@ -171,14 +171,16 @@
     }
 
     function drawGame() {
-        let b = outer.getBoundingClientRect();
+        let ob = outer.getBoundingClientRect();
         let m = parseFloat(window.getComputedStyle(outer, null).getPropertyValue('padding-left')) * 2;
 
-        size.x  = b.right - b.left - m;
-        size.y  = b.bottom - b.left - m
+        canvas.width    = ob.right - ob.left - m;
+        canvas.height   = ob.bottom - ob.top - m;
 
-        canvas.width    = size.x;
-        canvas.height   = size.y;
+        let b = canvas.getBoundingClientRect();
+        
+        size.x  = b.right - b.left;
+        size.y  = b.bottom - b.top;
 
         let cctx = canvas.getContext('2d');
 
@@ -197,7 +199,7 @@
         background-color: #121218;
         padding: 0px;
         margin: 0px;
-        box-sizing: border-box;;
+        box-sizing: border-box;
         
         box-shadow: #ddf6 0px 0px 2px 2px;
         color: #888;
@@ -208,13 +210,19 @@
         height: 70%;
         box-sizing: border-box;
         margin: 0px;
-        padding: 4px;
+        padding: 10px;
+
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
     }
 </style>
 
 <div bind:this={outer}>
     {#if showDebugInfo}
-        <div>Zoom: {Math.round(100 / zoom)}% | Pos: {Math.round(posXY.x)},{Math.round(posXY.y)} | Mouse: {Math.round(mouse.x)}px,{Math.round(mouse.y)}px (real: {Math.round(transformFromCamera(mouse).x)},{Math.round(transformFromCamera(mouse).y)} - tile: {Math.round(getTileAt(transformFromCamera(mouse)).x)},{Math.round(getTileAt(transformFromCamera(mouse)).y)}) | Visual tile size: {Math.round(tileSize / zoom)}px</div>
+        <p>Zoom: {Math.round(100 / zoom)}% | Pos: {Math.round(posXY.x)},{Math.round(posXY.y)} | Mouse: {Math.round(mouse.x)}px,{Math.round(mouse.y)}px (real: {Math.round(transformFromCamera(mouse).x)},{Math.round(transformFromCamera(mouse).y)} - tile: {Math.round(getTileAt(transformFromCamera(mouse)).x)},{Math.round(getTileAt(transformFromCamera(mouse)).y)}) | Visual tile size: {Math.round(tileSize / zoom)}px</p>
     {/if}
 
     <canvas id="game-view" bind:this={canvas} on:click on:mousemove={onmousemove} on:mouseout={onmouseout}></canvas>

@@ -16,6 +16,11 @@
     let status;
     let paused = false;
 
+    window.addEventListener('resize', () => {
+        updateSizes();
+        updateHead();
+    });
+
     export let panning = false;
 
     let joystickBase = null;
@@ -30,8 +35,12 @@
         let headBounds = joystickHead.getBoundingClientRect();
         let headRadius = (headBounds.bottom - headBounds.top) / 2;
 
-        center.x = joystickBase.clientWidth / 2 - headRadius;
-        center.y = joystickBase.clientHeight / 2 - headRadius;
+        let baseBounds = joystickBase.getBoundingClientRect();
+        let baseW = baseBounds.right - baseBounds.left;
+        let baseH = baseBounds.bottom - baseBounds.top;
+
+        center.x = baseW / 2 - headRadius;
+        center.y = baseH / 2 - headRadius;
 
         center.maxRad = Math.pow(center.x - headRadius, 2) + Math.pow(center.y - headRadius, 2);
     }
@@ -123,11 +132,9 @@
         margin: 5px;
         background-color: #555;
         border-radius: 100%;
-        display: inline-block;
-        padding: 50px;
+        padding-right: 8.5%;
         position: relative;
         box-shadow: #00000078 0px 0px 4px 2px;
-        box-sizing: border-box;
 
         -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none; -o-user-select:none;
     }
@@ -135,11 +142,12 @@
     .joystick-head {
         margin: 0px;
         border-radius: 50%;
-        width: 10%;
-        height: 10%;
+        width: 0%;
+        height: 0%;
         position: absolute;
         display: inline-block;
-        padding: 8px;
+        font-size: 50%;
+        padding: 6px;
     }
 </style>
 

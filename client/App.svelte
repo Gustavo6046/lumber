@@ -51,11 +51,11 @@ import { onMount } from 'svelte';
 
     let zoom = 2;
 
-    let maxZoom = 15;
-    let minZoom = 0.5;
+    let maxZoom = 12;
+    let minZoom = 0.6;
 
-    let minZoomSpeed = 0.6;
-    let maxZoomSpeed = 2.5;
+    let minZoomSpeed = 1.1;
+    let maxZoomSpeed = 5.0;
 
     function makeHighlight(type, color, pos) {
         return {
@@ -84,8 +84,8 @@ import { onMount } from 'svelte';
 
     function _tick(timeDelta) {
         if (panning) {
-            posXY.x += panXY.x * zoom / 3 * timeDelta;
-            posXY.y += panXY.y * zoom / 3 * timeDelta;
+            posXY.x += panXY.x * zoom * timeDelta;
+            posXY.y += panXY.y * zoom * timeDelta;
         }
 
         if (zooming) {
@@ -116,13 +116,10 @@ import { onMount } from 'svelte';
 
 <style>
     .game-panel {
-        background-color: #fff1;
-        padding: 20px;
-        box-sizing: border-box;
-        box-shadow: #99c6 -2px 2px 5px 1px;
+        width: 100%;
+        height: 100%;
     }
 </style>
-
 
 <div class="game-panel">
     <GameCanvas

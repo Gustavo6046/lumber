@@ -118,7 +118,6 @@
 <style>
     .joystick-base {
         margin: 5px;
-        padding: 2px;
         background-color: #555;
         border-radius: 100%;
         display: inline-block;
@@ -132,7 +131,6 @@
 
     .joystick-head {
         margin: 0px;
-        padding: 0px;
         border-radius: 50%;
         width: 10%;
         height: 10%;
